@@ -43,7 +43,7 @@ def collect_volume_statistics(volName):
 	volumeStatistics["1_df_output_details"] = df_details
 	volumeStatistics["5_raw_stat_output"] = stat_details
 	volumeStatistics["6_raw_statvfs_output"] = statvfs_details
-	return json.dumps(volumeStatistics, sort_keys=True, indent=4)
+	return volumeStatistics
 
 @app.route('/')
 def hello_world():
@@ -52,8 +52,7 @@ def hello_world():
 @app.route('/getVolumeStat')
 def get_volume_statistics():
 	volName = request.args.get('vol')
-	return collect_volume_statistics(volName)
-	#return jsonify(collect_volume_statistics(volName))
+	return jsonify(collect_volume_statistics(volName))
 
 if __name__ == '__main__':
 	app.run(port=5000)
