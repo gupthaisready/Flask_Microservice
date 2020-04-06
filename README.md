@@ -1,13 +1,11 @@
 # Flask_Microservice
-A simple flask based microservice app to fetch volume statistics
+A simple flask based microservice app to fetch volume statistics. Runs by default on http://localhost:5000
 
-Runs by default on http://localhost:5000
+Endpoint: `/getVolumeStat`
 
-Endpoint: /getVolumeStat
+Input argument: vol=`<valid path of a volume>`
 
-Input argument: vol=<valid path of a volume>
-  
-Example: http://localhost:5000/getVolumeStat?vol=/home
+Example: `http://localhost:5000/getVolumeStat?vol=/home`
 
 Sample output:
 ```
