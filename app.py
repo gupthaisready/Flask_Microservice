@@ -5,6 +5,7 @@ import os
 import subprocess
 import shlex
 import time
+from os import path
 
 #
 # Instantiating Log Handlers
@@ -18,7 +19,7 @@ logging.basicConfig(filename='myApplication.log', level=logging.DEBUG, format='%
 ##
 
 app = Flask(__name__)
-
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 #
 # Subroutines
@@ -88,12 +89,12 @@ def collect_volume_statistics(volName):
 	return volumeStatistics
 
 
-# The microservice for '/'. Well this doesn't perform anything other than printing a welcome message
+# The microservice for '/'. Well this doesn't perform anything other than printing a welcome message and a help message
 #
 @app.route('/')
 def hello_world():
-	app.logger.info("No specific service running here. Just welcome message")
-	return 'Welcome to Get Volume Statistics Microservice app!'
+	app.logger.info("No specific service running here. Just welcome message and a help message")
+	return 'Welcome to Get Volume Statistics Microservice app!\nCall the endpoint /getVolumeStat with an argument of vol. For example: /getVolumeStat?vol=/home\n'
 
 
 # The microservice for '/getVolumeStat'. Supposed to be called along with "?vol=<volname>" argument
@@ -101,6 +102,15 @@ def hello_world():
 @app.route('/getVolumeStat')
 def get_volume_statistics():
 	volName = request.args.get('vol')
+	if not volName:
+		app.logger.error("Volume name not provided as argument")
+		return 'ERROR: Volume name was not provided as argument. Please call the endpoint /getVolumeStat with an argument of vol. For example: /getVolumeStat?vol=/home\n'
+
+
+	if not path.exists(volName):
+		app.logger.error("Provided volume name does not exist")
+		return 'ERROR: Provided volume name does not exist\n'
+
 	app.logger.info("Request for collecting volume statistics for "+volName+" received.")
 	return jsonify(collect_volume_statistics(volName))
 
