@@ -4,9 +4,13 @@ A simple flask based microservice app to fetch volume statistics
 Runs by default on http://localhost:5000
 
 Endpoint: /getVolumeStat
+
 Input argument: vol=<valid path of a volume>
+  
 Example: http://localhost:5000/getVolumeStat?vol=/home
+
 Sample output:
+```
 {
   "1_df_output_details": {
     "/home": {
@@ -58,3 +62,4 @@ Sample output:
     "f_namemax": 255
   }
 }
+```
